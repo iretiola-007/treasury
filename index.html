@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Birthday Gift ❤️</title>  
+        <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              font-family: 'Poppins', Arial, sans-serif;
+            }
+        
+            body {
+              background: linear-gradient(135deg, #ffcad4, #fff1e6);
+              color: #333;
+              overflow-x: hidden;
+            }
+        
+            section {
+              min-height: 100vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              padding: 40px 20px;
+              text-align: center;
+            }
+        
+            /* HERO */
+            .hero h1 {
+              font-size: 2.5rem;
+              margin-bottom: 20px;
+            }
+        
+            .hero button {
+              padding: 12px 24px;
+              border: none;
+              border-radius: 12px;
+              background: #ff758f;
+              color: white;
+              font-size: 16px;
+              cursor: pointer;
+              transition: 0.3s;
+            }
+        
+            .hero button:hover {
+              background: #ff4d6d;
+            }
+        
+            /* TYPING */
+            .typing-box {
+              max-width: 700px;
+              font-size: 1.2rem;
+              line-height: 1.8;
+              min-height: 120px;
+            }
+        
+            .cursor {
+              display: inline-block;
+              width: 10px;
+              background: #333;
+              animation: blink 0.7s infinite;
+              margin-left: 3px;
+            }
+        
+            @keyframes blink {
+              50% { opacity: 0; }
+            }
+        
+            /* CARD STACK */
+            .card-stack {
+              position: relative;
+              width: 320px;
+              height: 420px;
+            }
+        
+            .card {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              border-radius: 20px;
+              overflow: hidden;
+              background: white;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+              transition: all 0.5s ease;
+              transform: scale(0.9) translateY(30px);
+              opacity: 0.5;
+            }
+        
+            .card.active {
+              transform: scale(1) translateY(0);
+              opacity: 1;
+              z-index: 3;
+            }
+        
+            .card img {
+              width: 100%;
+              height: 80%;
+              object-fit: cover;
+            }
+        
+            .card p {
+              padding: 10px;
+              font-size: 14px;
+            }
+        
+            button.next {
+              margin-top: 20px;
+              padding: 10px 18px;
+              border: none;
+              border-radius: 10px;
+              background: #ff758f;
+              color: white;
+              cursor: pointer;
+            }
+        
+            button.next:hover {
+              background: #ff4d6d;
+            }
+        
+            /* FINAL */
+            .final h2 {
+              font-size: 2rem;
+              margin-bottom: 15px;
+            }
+        
+            .final p {
+              max-width: 600px;
+              font-size: 1.1rem;
+              line-height: 1.7;
+            }
+        </style>
+    </head>
+    <body>
+        <section class="hero" id="hero">
+            <h1>Happy Birthday Mum ❤️</h1>
+            <button onclick="startExperience()">Open Your Gift</button>
+        </section>
+        <section id="typingSection" style="display:none;">
+            <div class="typing-box"> 
+                <span id="text"></span>
+                <span class="cursor"></span>
+            </div>
+        </section>
+        <section id="slideshow" style="display:none;">
+            <div class="card-stack" id="cardStack">
+                <div class="card active">
+                    <img src="img1.jpg" />
+                    <p>This would’ve been your gift 😹</p>
+                </div>
+
+                <div class="card">
+                    <img src="img2.jpg" />
+                    <p>But I got attached...</p>
+                </div>
+
+                <div class="card">
+                    <img src="img3.jpg" />
+                    <p>So I kept changing my mind...</p>
+                </div>
+
+                <div class="card">
+                    <img src="img4.jpg" />
+                    <p>So instead, you get this ❤️</p>
+                </div>
+
+            </div>
+            <button class="next" onclick="nextCard()">Next →</button>
+
+        </section>
+        <section id="final" style="display:none;">
+            <div class="final">
+                <h2>Thank you ❤️</h2>
+                <p>
+                You’ve done more for me than I can ever put into words.
+                I may not always say it, but I appreciate you deeply.
+                <br><br>
+                I love you Mum ❤️
+                </p>
+            </div>
+        </section>
+        <script>
+
+/* FLOW CONTROL */
+function startExperience() {
+  document.getElementById("hero").style.display = "none";
+  document.getElementById("typingSection").style.display = "flex";
+  startTyping();
+}
+
+/* TYPING */
+const message = `Hi Mum...\nI didn’t know what to get you this year...\nSo I built this instead...\nBecause you deserve effort, not just gifts ❤️`;
+
+let i = 0;
+function startTyping() {
+  const textEl = document.getElementById("text");
+
+  function type() {
+    if (i < message.length) {
+      textEl.innerHTML += message[i] === "\n" ? "<br>" : message[i];
+      i++;
+      setTimeout(type, 40);
+    } else {
+      setTimeout(() => {
+        document.getElementById("typingSection").style.display = "none";
+        document.getElementById("slideshow").style.display = "flex";
+      }, 1000);
+    }
+  }
+
+  type();
+}
+
+/* CARD STACK */
+let current = 0;
+const cards = document.querySelectorAll(".card");
+
+function updateCards() {
+  cards.forEach((card, index) => {
+    let position = (index - current + cards.length) % cards.length;
+
+    card.classList.remove("active");
+
+    if (position === 0) {
+      card.style.transform = "scale(1) translateY(0)";
+      card.style.opacity = "1";
+      card.style.zIndex = "3";
+      card.classList.add("active");
+    } else if (position === 1) {
+      card.style.transform = "scale(0.95) translateY(20px)";
+      card.style.opacity = "0.7";
+      card.style.zIndex = "2";
+    } else if (position === 2) {
+      card.style.transform = "scale(0.9) translateY(40px)";
+      card.style.opacity = "0.5";
+      card.style.zIndex = "1";
+    } else {
+      card.style.opacity = "0";
+    }
+  });
+}
+
+function nextCard() {
+  current++;
+
+  if (current >= cards.length) {
+    document.getElementById("slideshow").style.display = "none";
+    document.getElementById("final").style.display = "flex";
+    return;
+  }
+
+  updateCards();
+}
+
+updateCards();
+
+</script>
+</body>
+</html>
