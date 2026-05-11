@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Happy Birthday, Mom! ✨ | A Celebration of You</title>
+    <!-- Google Fonts & smooth feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fef9e8 0%, #ffe6d5 100%);
+            font-family: 'Inter', sans-serif;
+            color: #2d2a24;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3e1cb;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e0a878;
+            border-radius: 10px;
+        }
+
+        /* confetti canvas */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+
+        /* header hero */
+        .hero {
+            text-align: center;
+            padding: 2rem 1rem 3rem;
+            border-radius: 3rem;
+            background: rgba(255, 248, 235, 0.7);
+            backdrop-filter: blur(2px);
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.1);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8rem;
+            background: linear-gradient(135deg, #c45c2c, #e2a16a, #f7cf9f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .age-sparkle {
+            font-size: 1.3rem;
+            font-weight: 500;
+            background: #f9e0b0;
+            display: inline-block;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(5px);
+            margin-top: 0.7rem;
+            color: #9b4b2c;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 680px;
+            margin: 1rem auto 0;
+            color: #5d4030;
+        }
+
+        /* photo spotlight */
+        .photo-glow {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0 3rem;
+        }
+        .mom-photo {
+            width: 280px;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.3), 0 0 0 8px #fff8f0, 0 0 0 12px #fadbb1;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+            background: #ffe3c9;
+        }
+        .mom-photo:hover {
+            transform: scale(1.02);
+            box-shadow: 0 35px 45px -18px black, 0 0 0 8px #fff, 0 0 0 14px #ffc48a;
+        }
+
+        /* message card + shuffle */
+        .message-card {
+            background: white;
+            border-radius: 48px;
+            padding: 2rem 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 2rem auto;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            border: 1px solid rgba(255,215,170,0.6);
+        }
+
+        .heart-icon {
+            font-size: 2.5rem;
+            color: #e6815b;
+            margin-bottom: 1rem;
+        }
+
+        .dynamic-message {
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            color: #7e3e22;
+            margin: 1rem 0;
+            line-height: 1.3;
+        }
+
+        .message-source {
+            font-size: 0.9rem;
+            color: #bb8a6a;
+            margin-top: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        .shuffle-btn {
+            background: #ffd6b0;
+            border: none;
+            padding: 12px 26px;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #7a3e22;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: 0.2s;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .shuffle-btn i {
+            font-size: 1.2rem;
+        }
+        .shuffle-btn:hover {
+            background: #ffca95;
+            transform: scale(0.97);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* memory gallery with hover effect + incentive to revisit */
+        .gallery-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 3rem 0 1rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .gallery-title span {
+            background: #fce2c1;
+            padding: 0 20px;
+            border-radius: 60px;
+        }
+
+        .photo-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .grid-item {
+            background: #fffaf2;
+            border-radius: 32px;
+            overflow: hidden;
+            width: 260px;
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 25px -8px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .grid-item:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.25);
+        }
+        .grid-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+        .grid-caption {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 500;
+            background: white;
+            color: #63381f;
+        }
+
+        /* fun facts / reasons to visit daily */
+        .daily-joy {
+            background: #fff2e6;
+            border-radius: 3rem;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        .daily-joy h3 {
+            font-size: 1.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .fun-fact-box {
+            font-size: 1.3rem;
+            font-weight: 500;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 2rem;
+            max-width: 700px;
+            margin: 1.2rem auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            color: #8b5137;
+        }
+        .refresh-fact {
+            background: none;
+            border: 2px solid #e6bc94;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+        .refresh-fact:hover {
+            background: #e6bc94;
+            color: white;
+        }
+
+        /* visitor counter & revisit encouragement */
+        .visit-counter {
+            text-align: center;
+            background: #ffffffc9;
+            backdrop-filter: blur(10px);
+            border-radius: 70px;
+            padding: 0.7rem 1.5rem;
+            display: inline-block;
+            width: auto;
+            margin: 0 auto 2rem;
+            font-weight: 500;
+            border: 1px solid #f4cfaa;
+        }
+        .counter-number {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #c26436;
+            margin: 0 5px;
+        }
+
+        /* birthday footer effect */
+        .footer-note {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #bb7b57;
+            border-top: 1px dashed #f3cfae;
+            padding-top: 2rem;
+        }
+
+        /* responsiveness */
+        @media (max-width: 750px) {
+            .container { padding: 1rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .dynamic-message { font-size: 1.4rem; }
+            .mom-photo { width: 220px; height: 220px; }
+            .grid-item { width: 210px; }
+            .photo-grid { gap: 1rem; }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+        .message-card {
+            animation: float 3s infinite alternate ease-in-out;
+        }
+        button, .grid-item, .shuffle-btn { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+    <!-- Hero area with Mom's name & interactive vibe -->
+    <div class="hero">
+        <h1>🎂 Happy Birthday, Mom! 🎂</h1>
+        <div class="age-sparkle">
+            <i class="fas fa-crown"></i> Our Forever Queen <i class="fas fa-heart" style="color:#e06c4a;"></i>
+        </div>
+        <p>Every moment with you is a gift. Today, the whole world celebrates <strong>YOU</strong> — the most radiant, loving, and incredible woman. ✨</p>
+    </div>
+
+    <!-- mom's main photo -->
+    <div class="photo-glow">
+        <img id="momMainImg" class="mom-photo" src="https://picsum.photos/id/20/400/400" alt="Mom's cherished portrait">
+    </div>
+
+    <!-- shuffled messages section (core attraction) -->
+    <div class="message-card">
+        <div class="heart-icon">
+            <i class="fas fa-star-of-life"></i> <i class="fas fa-heart" style="color:#e36346;"></i> <i class="fas fa-gem"></i>
+        </div>
+        <div class="dynamic-message" id="loveMessage">
+            You are the heartbeat of our family.
+        </div>
+        <div class="message-source" id="msgSource">❤️ from your loving child</div>
+        <button class="shuffle-btn" id="shuffleMsgBtn"><i class="fas fa-sync-alt"></i> Surprise me, Mom! 💌</button>
+        <p style="margin-top: 12px; font-size: 0.8rem;"><i class="fas fa-infinity"></i> each message is a fresh reminder of your magic</p>
+    </div>
+
+    <!-- little visitor counter to create revisiting familiarity -->
+    <div style="display: flex; justify-content: center;">
+        <div class="visit-counter">
+            <i class="fas fa-calendar-check"></i> This birthday love has been felt 
+            <span class="counter-number" id="visitCount">0</span> times today 🌟
+        </div>
+    </div>
+
+    <!-- Sweet Memory Lane (Photo Grid) 4 stunning images that evoke warmth -->
+    <div class="gallery-title">
+        <span><i class="fas fa-camera-retro"></i> Timeless Memories</span>
+    </div>
+    <div class="photo-grid" id="photoGrid">
+        <!-- These images are curated with love; they represent beautiful moments -->
+        <!-- using Unsplash / placeholder images with warm themes but high quality -->
+    </div>
+
+    <!-- daily joyful corner: random little facts that change every visit and with click - encourages multiple visits -->
+    <div class="daily-joy">
+        <h3><i class="fas fa-hand-sparkles"></i> Mom's Daily Joy Bite <i class="fas fa-smile-wink"></i></h3>
+        <div class="fun-fact-box" id="funFactBox">
+            🌼 Click below to receive a tiny reason why you're extraordinary 🌼
+        </div>
+        <button class="refresh-fact" id="refreshFactBtn"><i class="fas fa-leaf"></i> New little joy 🌈</button>
+        <p style="margin-top: 1rem; font-size: 0.8rem;">✨ Come back every day — new messages & fresh joy await you ✨</p>
+    </div>
+
+    <div class="footer-note">
+        <i class="fas fa-infinity"></i> For Mom — our sun, our safe harbor. Loved beyond measure. 
+        <i class="fas fa-birthday-cake"></i>
+    </div>
+</div>
+
+<script>
+    // ---------- CONFETTI BURST on load & on shuffle ----------
+    const canvas = document.getElementById('confetti-canvas');
+    let confettiActive = false;
+    let animationId = null;
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class ConfettiParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height - canvas.height;
+            this.size = Math.random() * 7 + 3;
+            this.speedY = Math.random() * 5 + 3;
+            this.speedX = (Math.random() - 0.5) * 2;
+            this.color = `hsl(${Math.random() * 60 + 20}, 80%, 60%)`; // warm tones
+            this.rotation = Math.random() * 360;
+            this.rotateSpeed = (Math.random() - 0.5) * 0.1;
+        }
+        update() {
+            this.y += this.speedY;
+            this.x += this.speedX;
+            this.rotation += this.rotateSpeed;
+            if (this.y > canvas.height + 50 || this.x < -50 || this.x > canvas.width + 50) {
+                return false;
+            }
+            return true;
+        }
+        draw(ctx) {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation * Math.PI / 180);
+            ctx.fillStyle = this.color;
+            ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size/1.5);
+            ctx.restore();
+        }
+    }
+
+    function startConfetti(duration = 2200) {
+        if (animationId) cancelAnimationFrame(animationId);
+        particles = [];
+        for (let i = 0; i < 130; i++) {
+            particles.push(new ConfettiParticle());
+        }
+        const ctx = canvas.getContext('2d');
+        let startTime = performance.now();
+        function animateConfetti(now) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let allDead = true;
+            for (let i = particles.length-1; i >= 0; i--) {
+                const alive = particles[i].update();
+                if (alive) {
+                    allDead = false;
+                    particles[i].draw(ctx);
+                } else {
+                    particles.splice(i,1);
+                }
+            }
+            if (particles.length === 0 || (now - startTime > duration)) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                return;
+            }
+            animationId = requestAnimationFrame(animateConfetti);
+        }
+        if (animationId) cancelAnimationFrame(animationId);
+        animationId = requestAnimationFrame(animateConfetti);
+        setTimeout(() => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }, duration);
+    }
+
+    // ---------- MESSAGE BANK (shuffled)  heartfelt notes ----------
+    const messageBank = [
+        { text: "Mom, you're the most selfless soul I know. Every sacrifice you made built my world. I love you endlessly. 💖", source: "Your forever grateful child" },
+        { text: "The world shines brighter because of your laughter. You make everything feel like home. Happy Birthday, my angel. 🌷", source: "From your biggest fan" },
+        { text: "Your hugs fix everything, your wisdom guides us, your smile lights up every room. Today we celebrate the masterpiece that is YOU. 🎨✨", source: "Family's heart" },
+        { text: "Roses are red, violets are blue, no one in the universe could ever replace you. You're pure magic, Mom. 🌹", source: "Unconditional love" },
+        { text: "Thank you for teaching me strength, kindness, and how to love fiercely. You're my hero every single day. 🦸‍♀️💪", source: "Your child" },
+        { text: "Life’s greatest blessing is having you as my mom. May this year shower you with all the joy you’ve given us. 🎁🎈", source: "Eternally grateful" },
+        { text: "Every success, every smile, every bit of good in me comes from you. You deserve the universe, Mom. 🌌", source: "Adoring child" },
+        { text: "Your gentle hands raised me, your warm heart saved me. Happy birthday to the queen of our family. 👑💕", source: "Your kingdom's love" }
+    ];
+
+    let currentMsgIndex = 0;
+
+    function getRandomMessage() {
+        const newIndex = Math.floor(Math.random() * messageBank.length);
+        return messageBank[newIndex];
+    }
+
+    function updateMessageUI(msgObj) {
+        const msgDiv = document.getElementById('loveMessage');
+        const sourceDiv = document.getElementById('msgSource');
+        if (msgObj) {
+            msgDiv.innerHTML = `“ ${msgObj.text} ”`;
+            sourceDiv.innerHTML = `<i class="fas fa-feather-alt"></i> ${msgObj.source}`;
+        }
+    }
+
+    function shuffleMessage() {
+        const newMsg = getRandomMessage();
+        updateMessageUI(newMsg);
+        startConfetti(1500);
+        // also increment a tiny visit-like feeling? no but makes mom smile
+    }
+
+    // ---- PHOTO GRID: beautiful images with captions (warm, modern, relevant)
+    const galleryImages = [
+        { url: "https://picsum.photos/id/30/400/300", caption: "🌸 Sunshine & Smiles 🌸", alt: "mom joyful moment" },
+        { url: "https://picsum.photos/id/64/400/300", caption: "🍰 Sweetest Baker & Heart 🍰", alt: "mom baking/cooking" },
+        { url: "https://picsum.photos/id/96/400/300", caption: "🌿 Nature's Grace 🌿", alt: "mom nature walk" },
+        { url: "https://picsum.photos/id/169/400/300", caption: "🌟 A radiant soul 🌟", alt: "mom glowing portrait" },
+        { url: "https://picsum.photos/id/26/400/300", caption: "📖 Wisdom & Warmth 📖", alt: "cozy mom reading" },
+        { url: "https://picsum.photos/id/20/400/300", caption: "✨ Timeless Elegance ✨", alt: "elegant mom smile" }
+    ];
+
+    function buildPhotoGrid() {
+        const gridContainer = document.getElementById('photoGrid');
+        gridContainer.innerHTML = '';
+        galleryImages.forEach(img => {
+            const gridItem = document.createElement('div');
+            gridItem.className = 'grid-item';
+            const imgEl = document.createElement('img');
+            imgEl.src = img.url;
+            imgEl.alt = img.alt;
+            imgEl.className = 'grid-img';
+            imgEl.loading = "lazy";
+            const captionDiv = document.createElement('div');
+            captionDiv.className = 'grid-caption';
+            captionDiv.innerHTML = `<i class="fas fa-heart" style="color:#e6815b;"></i> ${img.caption}`;
+            gridItem.appendChild(imgEl);
+            gridItem.appendChild(captionDiv);
+            gridItem.addEventListener('click', () => {
+                startConfetti(800);
+                // subtle popup? just to add interactive joy
+                alert(`💝 Mom, this memory reminds us how beautiful you are! 💝`);
+            });
+            gridContainer.appendChild(gridItem);
+        });
+    }
+
+    // ----- DAILY FUN FACTS (random unique reasons to revisit)
+    const funFacts = [
+        "🌻 You have the warmest laugh that heals hearts instantly.",
+        "🍃 Your cooking is legendary — it tastes like home and magic.",
+        "💃 You’ve taught us that strength and grace go hand in hand.",
+        "📸 Every photo of you radiates kindness — it’s your superpower.",
+        "🎶 The world’s best advice comes from you, Mom.",
+        "🌸 You are the glue that keeps our family full of joy.",
+        "🌟 Your resilience inspires everyone around you daily.",
+        "☕ You make mornings feel like a cozy hug."
+    ];
+    let currentFactIndex = -1;
+    function displayRandomFact() {
+        let newIdx = Math.floor(Math.random() * funFacts.length);
+        // avoid same twice optionally but fine, but delightful
+        if (funFacts.length > 1 && newIdx === currentFactIndex) {
+            newIdx = (newIdx + 1) % funFacts.length;
+        }
+        currentFactIndex = newIdx;
+        document.getElementById('funFactBox').innerHTML = `<i class="fas fa-star"></i> ${funFacts[currentFactIndex]} <i class="fas fa-star"></i>`;
+        startConfetti(500);
+    }
+
+    // ---- VISITOR COUNTER (localstorage to increase and make revisiting rewarding) ----
+    function initOrIncrementVisitCounter() {
+        let visits = localStorage.getItem('momBirthdayVisits');
+        if (visits === null) {
+            visits = 1;
+        } else {
+            visits = parseInt(visits) + 1;
+        }
+        localStorage.setItem('momBirthdayVisits', visits);
+        const counterSpan = document.getElementById('visitCount');
+        if (counterSpan) counterSpan.innerText = visits;
+        // sweet extra: if visits % 5 === 0, extra confetti!
+        if (visits % 5 === 0 && visits > 0) {
+            setTimeout(() => {
+                startConfetti(2000);
+                // show browser message? subtle but mother sees
+                const msgDiv = document.createElement('div');
+                msgDiv.style.position = 'fixed';
+                msgDiv.style.bottom = '20px';
+                msgDiv.style.left = '20px';
+                msgDiv.style.background = '#fdebd0';
+                msgDiv.style.padding = '12px 20px';
+                msgDiv.style.borderRadius = '50px';
+                msgDiv.style.fontWeight = 'bold';
+                msgDiv.style.zIndex = '9999';
+                msgDiv.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                msgDiv.innerHTML = `🎉 Mom, you've visited ${visits} times! We love you extra today! 🎉`;
+                document.body.appendChild(msgDiv);
+                setTimeout(() => msgDiv.remove(), 3500);
+            }, 200);
+        }
+        return visits;
+    }
+
+    // change main image to something dynamic but keep elegant
+    // we will set mom's main img to a lovely floral portrait from unsplash but same consistent but more customized variant? 
+    // Using a really beautiful high-res placeholder: we change it to something more motherly: 
+    const momImgUrl = "https://images.pexels.com/photos/3768126/pexels-photo-3768126.jpeg?auto=compress&cs=tinysrgb&w=600";
+    const backupImg = "https://picsum.photos/id/20/400/400";
+    const mainMomImg = document.getElementById('momMainImg');
+    // try to load a beautiful mom portrait (pexels free usage friendly via embed)
+    mainMomImg.src = "https://images.pexels.com/photos/3823495/pexels-photo-3823495.jpeg?auto=compress&cs=tinysrgb&w=600";
+    mainMomImg.onerror = () => { mainMomImg.src = "https://picsum.photos/id/64/400/400"; };
+
+    // ---- ADDITIONAL: final touches to make site attractive and sticky: dynamic background hearts
+    function createFloatingHearts() {
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const heart = document.createElement('i');
+                heart.className = 'fas fa-heart';
+                heart.style.position = 'fixed';
+                heart.style.bottom = '-20px';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.color = `rgba(228, 120, 78, ${Math.random() * 0.5 + 0.2})`;
+                heart.style.fontSize = Math.random() * 20 + 12 + 'px';
+                heart.style.zIndex = '999';
+                heart.style.pointerEvents = 'none';
+                heart.style.animation = `floatHeart 4s linear forwards`;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }
+        }, 1800);
+    }
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = `
+        @keyframes floatHeart {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-800px) rotate(20deg); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+
+    // ---- EVENT LISTENERS + INIT ----
+    window.addEventListener('load', () => {
+        buildPhotoGrid();
+        const firstMsg = messageBank[Math.floor(Math.random() * messageBank.length)];
+        updateMessageUI(firstMsg);
+        initOrIncrementVisitCounter();
+        displayRandomFact(); // start fun fact
+        startConfetti(1200); // initial birthday celebration
+        
+        // shuffle button
+        document.getElementById('shuffleMsgBtn').addEventListener('click', shuffleMessage);
+        document.getElementById('refreshFactBtn').addEventListener('click', () => {
+            displayRandomFact();
+        });
+        createFloatingHearts();
+        // additional sweet:  auto rotate fun fact every 25 seconds? helps revisit
+        setInterval(() => {
+            displayRandomFact();
+        }, 25000);
+        setInterval(() => {
+            // subtle extra message shuffle every 40 sec? optional not intrusive but reminder
+            if (Math.random() > 0.5) {
+                const randMsg = getRandomMessage();
+                updateMessageUI(randMsg);
+                startConfetti(600);
+            }
+        }, 38000);
+    });
+</script>
+</body>
+</html>
